@@ -1,0 +1,98 @@
+.TH branchdiff 1
+.SH NAME
+branchdiff - A tool for showing diffs of a particular Python code block
+             across several subversion branches at once.
+.SH SYNOPSIS
+.B branchdiff
+versioned_file Class.function [-b branch1,branch2,...] [--ann] [--trunk] [-o url1,url2,...]
+
+.SH DESCRIPTION
+This script compares function or class blocks from a particular Python
+file with the equivalent blocks in Python files at the same path in
+other branches of the same repository, or locations on the internet.
+
+    branchdiff branchdiff.py get_block_lines
+
+will compare the function 'get_block_lines' contained in branchdiff.py
+with against the same function in all branches of the same subversion
+repository.
+
+---
+     
+Reasons for using this script:
+          
+    This script allows the comparison of a specific part of code on many
+    branches. This is particular useful on projects where there are a
+    great number of branches with a large team working on them. Being
+    able to compare a relevant part of code with versions that other
+    users may have worked on can be leveraged to prevent the same bugs
+    being fixed in different ways and help forsee & prevent subsequent
+    merging conflicts.
+           
+---
+
+Assumptions made by this script:
+       
+    The file you wish to compare is versioned in a subversion repository
+    and contained within a directory or a descendent of a directory
+    named either 'trunk', 'branches' or 'tags'.
+       
+    When using the -b or -t options, that the path to the given file is
+    the same across all branches and trunk.
+           
+    The class or function to be compared is defined using a def or class
+    statement.
+
+.SH OPTIONS
+-h, --help
+    Show the help message for this program.
+       
+-b BRANCHES, --branches=BRANCHES
+    Specify a comma-separated list of branch names.
+       
+-a, --ann
+    Show revision & author information inline.
+      
+-t, --trunk
+    Include diffs from trunk.
+       
+-o OTHERS, --others=OTHERS
+    Specify a comma-separated list of other URLs which should be diffed
+    against the given file.
+
+
+
+.SH EXAMPLES
+Comparing a class function across all branches in the repository:
+           
+    branchdiff myfile.py ClassName.function_name
+          
+Comparing a function within a function across select branches:
+           
+    branchdiff myfile.py function_name.sub_function_name \
+               -b branch1, branch2
+      
+Comparing a class with one branch and trunk:
+          
+    branchdiff myfile.py ClassName -b branch1 -t
+       
+Comparing a class across all branches and show revision & author
+information:
+       
+    branchdiff myfile.py ClassName --ann
+       
+Comparing a function with one branch and an arbitrary URL:
+          
+    branchdiff myfile.py function_name -b branch1 \
+               -o http://github.com/user/project/raw/master/myfile.py
+       
+
+
+.SH BUGS
+If you found any bugs or have any feature requests, please open an
+issue at http://github.com/mitchellrj/isotoma.branchdiff/issues.
+
+
+.SH AUTHOR
+Richard Mitchell <richard.mitchell@isotoma.com>
+
